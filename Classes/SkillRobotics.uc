@@ -6,7 +6,7 @@ class SkillRobotics expands Skill;
 defaultproperties
 {
      SkillName="Robotics"
-     Description="Through knowledge of mechanics and artifical intelligence, robotics is the ability to create and maintain all kinds of robots from small utility bots to full military robots."
+     Description="Practical knowledge of mechanics and artificial intelligence allows the agent to create and maintain automata from small utility bots to full military robots."
      SkillIcon=Texture'DeusExUI.UserInterface.SkillIconTech'
      cost(0)=1000
      cost(1)=2000

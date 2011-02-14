@@ -249,8 +249,8 @@ defaultproperties
      skillClasses(7)=Class'DeusEx.SkillTech'
      skillClasses(8)=Class'DeusEx.SkillMedicine'
      skillClasses(9)=Class'DeusEx.SkillComputer'
-     skillClasses(10)=Class'DeusEx.SkillSwimming'
-     skillClasses(11)=Class'DeusEx.SkillRobotics'
+     skillClasses(10)=Class'DeusEx.SkillRobotics'
+     skillClasses(11)=Class'DeusEx.SkillSwimming' // must always be last as it's used as an end marker by HUD code
      NoToolMessage="You need the %s"
      NoSkillMessage="%s skill level insufficient to use the %s"
      SuccessMessage="Success!"
