@@ -70,12 +70,18 @@ function CreateStatusWindow()
 
 function CreateSkillsTileWindow()
 {
-	winTile = TileWindow(winClient.NewChild(Class'TileWindow'));
+	local PersonaScrollAreaWindow winScroll;
+	
+	winScroll = CreateScrollAreaWindow(winClient);
+	winScroll.SetPos(12, 39);
+	winScroll.SetSize(313, 297);	
+	
+	winTile = TileWindow(winScroll.clipWindow.NewChild(Class'TileWindow'));
 
-	winTile.SetPos(12, 39);
-	winTile.SetSize(302, 297);
 	winTile.SetMinorSpacing(0);
 	winTile.SetMargins(0, 0);
+	winTile.SetPos(12, 39);
+	winTile.SetSize(302, 500);
 	winTile.SetOrder(ORDER_Down);
 }
 
