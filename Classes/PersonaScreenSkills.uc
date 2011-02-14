@@ -74,14 +74,14 @@ function CreateSkillsTileWindow()
 	
 	winScroll = CreateScrollAreaWindow(winClient);
 	winScroll.SetPos(12, 39);
-	winScroll.SetSize(313, 297);	
+	winScroll.SetSize(302, 297);	
 	
 	winTile = TileWindow(winScroll.clipWindow.NewChild(Class'TileWindow'));
 
 	winTile.SetMinorSpacing(0);
 	winTile.SetMargins(0, 0);
 	winTile.SetPos(12, 39);
-	winTile.SetSize(302, 500);
+	winTile.SetSize(302, 297 * 2);
 	winTile.SetOrder(ORDER_Down);
 }
 
