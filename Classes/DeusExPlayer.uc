@@ -4403,7 +4403,7 @@ exec function ParseLeftClick()
 					DoFrob(Self, inHand);
 
 			// special case for using multitools on hackable things
-			if (FrobTarget.IsA('HackableDevices'))
+			if (FrobTarget.IsA('HackableDevices') || FrobTarget.IsA('Robot'))
 			{
 				if (inHand.IsA('Multitool'))
 				{

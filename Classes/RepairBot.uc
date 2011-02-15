@@ -176,4 +176,5 @@ defaultproperties
      BindName="RepairBot"
      FamiliarName="Repair Bot"
      UnfamiliarName="Repair Bot"
+	 bCanBeReprogrammed=False
 }

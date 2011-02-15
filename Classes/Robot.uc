@@ -18,6 +18,10 @@ var float crazedTimer;
 
 var(Sounds) sound explosionSound;
 
+var() bool bCanBeReprogrammed;
+var bool bIsPlayerPet;
+var bool bPlayerPetReverseAlliances;
+
 function InitGenerator()
 {
 	local Vector loc;
@@ -67,7 +71,7 @@ function Tick(float deltaTime)
 			CrazedTimer = 0;
 	}
 
-	if (CrazedTimer > 0)
+	if (CrazedTimer > 0 ^^ bPlayerPetReverseAlliances)
 		bReverseAlliances = true;
 	else
 		bReverseAlliances = false;
@@ -537,13 +541,14 @@ function PlayAreaSecureSound()
 
 state Disabled
 {
-	ignores bump, frob, reacttoinjury;
+	ignores bump, /*frob, */reacttoinjury;
 	function BeginState()
 	{
 		StandUp();
 		BlockReactions(true);
 		bCanConverse = False;
 		SeekPawn = None;
+		bIsPlayerPet = false;
 	}
 	function EndState()
 	{
@@ -598,10 +603,76 @@ function bool IsImmobile()
    return (!bHasReactions && !bHasFears && !bHasHates);
 }
 
-function Frob(Actor frobber, Inventory frob_with)
+function Frob(Actor frobber, Inventory frobWith)
 {
-	super.Frob(frobber, frob_with);
-	//SetOrders('Following', '', true);
+	local Pawn P;
+	local DeusExPlayer Player;
+	local bool bStealIt;
+	local string msg;
+	local Multitool curTool;
+	local int roboticsLevel;
+	local int i;
+	
+	//super.Frob(frobber, frobWith);
+
+	P = Pawn(frobber);
+	Player = DeusExPlayer(P);
+	bStealIt = False;
+	msg = "";
+
+	// make sure someone is trying to hack the device
+	if (P == None || Player == None)
+		return;
+	
+	// Get what's in the player's hand
+	if (frobWith != None)
+	{
+		// check for the use of multitools
+		if (frobWith.IsA('Multitool') && (Player.SkillSystem != None))
+		{
+			curTool = Multitool(frobWith);
+			curTool.PlayUseAnim();
+			curTool.StopUseAnim();
+			roboticsLevel = Player.SkillSystem.GetSkillLevel(class'SkillRobotics');
+			if(bCanBeReprogrammed && !bIsPlayerPet)
+			{
+				if(roboticsLevel > 0)
+				{
+					if (EMPHitPoints > 0)
+					{
+						msg = "Robots must be disabled before they can be stolen.";
+					}
+					else
+					{
+						curTool.UseOnce();
+						AIStartEvent('MegaFutz', EAITYPE_Visual);
+						bStealIt = True;
+						msg = "You stole the robot.";
+					}
+				}
+				else
+				{
+					msg = "You are not skilled enough in robotics.";
+				}
+			}
+		}
+	}
+
+	// give the player a message
+	if ((Player != None) && (msg != ""))
+		Player.ClientMessage(msg);
+
+	// take over the robot
+	if (bStealIt)
+	{
+		bIsPlayerPet = true;
+		EMPHitPoints = 100;
+		SetOrders('Following', '', true);
+		bReverseAlliances = bPlayerPetReverseAlliances; // ignore scramble grenade effects to calculate "real" disposition to player
+		if(IsValidEnemy(Player))
+			bPlayerPetReverseAlliances = !bPlayerPetReverseAlliances;
+		SetAlliance(Player.Alliance);
+	}
 }
 
 defaultproperties
@@ -638,4 +709,5 @@ defaultproperties
      Die=Sound'DeusExSounds.Generic.Spark1'
      VisibilityThreshold=0.006000
      BindName="Robot"
+	 bCanBeReprogrammed=True
 }

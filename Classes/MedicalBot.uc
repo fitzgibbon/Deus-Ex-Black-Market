@@ -179,4 +179,5 @@ defaultproperties
      BindName="MedicalBot"
      FamiliarName="Medical Bot"
      UnfamiliarName="Medical Bot"
+	 bCanBeReprogrammed=False
 }
