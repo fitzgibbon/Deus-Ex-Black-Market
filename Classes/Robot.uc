@@ -652,7 +652,7 @@ function Frob(Actor frobber, Inventory frobWith)
 				}
 				else
 				{
-					msg = "You are not skilled enough in robotics.";
+					msg = "You need the robotics skill to steal robots.";
 				}
 			}
 		}
